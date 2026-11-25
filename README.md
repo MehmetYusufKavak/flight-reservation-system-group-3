@@ -32,38 +32,30 @@ Supervisor: Ercüment Aydın
 
 Gereksinim: Docker + Docker Compose
 
-```bash
-git clone https://github.com/<KULLANICI>/flight-reservation-system-group-3.git
-cd flight-reservation-system-group-3
-cp .env.example .env
-docker compose up -d --build
-```
+    git clone https://github.com/MehmetYusufKavak/flight-reservation-system-group-3.git
+    cd flight-reservation-system-group-3
+    cp .env.example .env
+    docker compose up -d --build
 
 Bu komut tek seferde PostgreSQL'i tablolar + örnek verilerle ve web uygulamasını ayağa kaldırır.
 
 Veritabanını sıfırlayıp `init.sql`'i yeniden çalıştırmak için:
 
-```bash
-docker compose down -v
-docker compose up -d --build
-```
+    docker compose down -v
+    docker compose up -d --build
 
 Veritabanına bağlanmak için:
 
-```bash
-docker exec -it flight_db psql -U flight_user -d flight_reservation
-```
+    docker exec -it flight_db psql -U flight_user -d flight_reservation
 
 ## Proje Yapısı
 
-```
-.
-├── backend/            # API (Auth + CRUD) ve Dockerfile
-├── db/init.sql         # CREATE TABLE + örnek veri (Rapor Chapter 5)
-├── docker-compose.yml
-├── .env.example
-└── README.md
-```
+    .
+    ├── backend/            # API (Auth + CRUD) ve Dockerfile
+    ├── db/init.sql         # CREATE TABLE + örnek veri (Rapor Chapter 5)
+    ├── docker-compose.yml
+    ├── .env.example
+    └── README.md
 
 ## Veritabanı
 
