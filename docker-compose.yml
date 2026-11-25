@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:16
+    container_name: flight_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-flight_user}
+      POSTGRES_PASSWORD: ${DB_PASS:-flight_pass}
+      POSTGRES_DB: ${DB_NAME:-flight_reservation}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # init.sql sadece volume BOSKEN (ilk kurulumda) calisir
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      # Lokal gelistirme icin (pgAdmin/DBeaver/backend). Sunucuda kapatilabilir.
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-flight_user} -d ${DB_NAME:-flight_reservation}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ---------------------------------------------------------------
+  # 1. kisi backend'i bitirince asagidaki blogun yorumunu kaldir.
+  # Backend kodu ./backend klasorunde, Dockerfile da orada olmali.
+  # ---------------------------------------------------------------
+  # app:
+  #   build: ./backend
+  #   container_name: flight_app
+  #   restart: unless-stopped
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   environment:
+  #     DB_HOST: db            # konteyner icinde 'localhost' DEGIL, servis adi
+  #     DB_PORT: 5432
+  #     DB_USER: ${DB_USER:-flight_user}
+  #     DB_PASS: ${DB_PASS:-flight_pass}
+  #     DB_NAME: ${DB_NAME:-flight_reservation}
+  #     DATABASE_URL: postgres://${DB_USER:-flight_user}:${DB_PASS:-flight_pass}@db:5432/${DB_NAME:-flight_reservation}
+  #     JWT_SECRET: ${JWT_SECRET:-change_me}
+  #     PORT: 3000
+  #   ports:
+  #     - "${APP_PORT:-80}:3000"   # tarayicidan http://<IP> ile acilir
+
+volumes:
+  db_data:
