@@ -3,65 +3,65 @@
 CMPE341 Database Design and Management – Atılım University, 2026-2027 Fall
 Supervisor: Ercüment Aydın
 
-## Ekip
+## Team
 
-| Üye | Görev |
+| Member | Responsibility |
 |---|---|
-| Ahmet Bekir MAHMAT | _(doldurun)_ |
-| Mehmet Yusuf KAVAK | Docker, PostgreSQL init, GitHub & Dokümantasyon |
-| Uğur TURHAN | _(doldurun)_ |
-| Yener TOPAL | _(doldurun)_ |
+| Ahmet Bekir MAHMAT | _(to be filled)_ |
+| Mehmet Yusuf KAVAK | Docker, PostgreSQL init, GitHub & Documentation |
+| Uğur TURHAN | _(to be filled)_ |
+| Yener TOPAL | _(to be filled)_ |
 
-## Uygulama Adresi
+## Application URL
 
-- **Canlı:** http://<PUBLIC_IP>  _(domain alındıysa: http://<DOMAIN>)_
-- **Lokal:** http://localhost
+- **Live:** http://<PUBLIC_IP>  _(if a domain is used: http://<DOMAIN>)_
+- **Local:** http://localhost
 
-## Test Hesapları
+## Test Accounts
 
-| Rol | E-posta | Şifre |
+| Role | Email | Password |
 |---|---|---|
 | Administrator | admin@mail.com | admin123 |
 | Customer | ali.yilmaz@mail.com | ali123 |
 | Customer | zeynep.kaya@mail.com | zeynep123 |
 | Customer | emre.demir@mail.com | emre123 |
 
-Şifreler veritabanında **bcrypt** hash olarak saklanır (`db/init.sql`).
+Passwords are stored in the database as **bcrypt** hashes (`db/init.sql`).
 
-## Çalıştırma
+## How to Run
 
-Gereksinim: Docker + Docker Compose
+Requirements: Docker + Docker Compose
 
     git clone https://github.com/MehmetYusufKavak/flight-reservation-system-group-3.git
     cd flight-reservation-system-group-3
     cp .env.example .env
     docker compose up -d --build
 
-Bu komut tek seferde PostgreSQL'i tablolar + örnek verilerle ve web uygulamasını ayağa kaldırır.
+This single command starts PostgreSQL (with all tables and sample data) together with the web application.
 
-Veritabanını sıfırlayıp `init.sql`'i yeniden çalıştırmak için:
+To reset the database and re-run `init.sql`:
 
     docker compose down -v
     docker compose up -d --build
 
-Veritabanına bağlanmak için:
+To connect to the database:
 
     docker exec -it flight_db psql -U flight_user -d flight_reservation
 
-## Proje Yapısı
+## Project Structure
 
     .
-    ├── backend/            # API (Auth + CRUD) ve Dockerfile
-    ├── db/init.sql         # CREATE TABLE + örnek veri (Rapor Chapter 5)
+    ├── backend/            # API (Auth + CRUD) and Dockerfile
+    ├── db/init.sql         # CREATE TABLE + sample data (Report Chapter 5)
     ├── docker-compose.yml
     ├── .env.example
     └── README.md
 
-## Veritabanı
+## Database
 
-7 tablo: `"User"`, `Passenger`, `Airport`, `Flight`, `Seat`, `Reservation`, `Payment`.
-Roller: `Customer`, `Administrator`.
+7 tables: `"User"`, `Passenger`, `Airport`, `Flight`, `Seat`, `Reservation`, `Payment`.
+Roles: `Customer`, `Administrator`.
 
-## API Endpoint'leri
+## API Endpoints
 
-_(1. kişi dolduracak / Swagger linki)_
+_(to be added by the backend developer / Swagger link)_
