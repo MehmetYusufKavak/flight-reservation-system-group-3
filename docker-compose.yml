@@ -1,3 +1,4 @@
+
 services:
   db:
     image: postgres:16
@@ -9,10 +10,8 @@ services:
       POSTGRES_DB: ${DB_NAME:-flight_reservation}
     volumes:
       - db_data:/var/lib/postgresql/data
-      # init.sql only runs when the volume is EMPTY (first start)
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
-      # Only reachable from this machine (pgAdmin / local backend), never from the internet
       - "127.0.0.1:5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-flight_user} -d ${DB_NAME:-flight_reservation}"]
@@ -30,11 +29,9 @@ services:
       db:
         condition: service_healthy
     environment:
-      # Inside Docker the database host is the service name "db", not localhost
       DATABASE_URL: postgresql+psycopg://${DB_USER:-flight_user}:${DB_PASS:-flight_pass}@db:5432/${DB_NAME:-flight_reservation}
       JWT_SECRET: ${JWT_SECRET:-change_me_please_use_a_long_random_string}
     ports:
-      # Swagger for local testing: http://localhost:8000/docs (not exposed to the internet)
       - "127.0.0.1:8000:8000"
 
   nginx:
@@ -47,7 +44,6 @@ services:
       - ./frontend:/usr/share/nginx/html:ro
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      # The ONLY public port: frontend at http://<IP>/ , API at http://<IP>/api/
       - "${APP_PORT:-80}:80"
 
 volumes:

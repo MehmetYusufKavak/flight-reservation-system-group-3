@@ -1,5 +1,7 @@
+
 # FastAPI backend (Python)
-# Build context: repo root (requirements.txt is in the root folder)
+# Build context: repository root
+
 FROM python:3.12-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -8,6 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 COPY requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/ .
