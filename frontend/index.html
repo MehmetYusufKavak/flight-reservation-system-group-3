@@ -9,68 +9,78 @@
 <body>
   <!-- ============ LOGIN VIEW ============ -->
   <main id="login-view" class="login-page" hidden>
-    <form id="login-form" class="card login-card" novalidate>
-      <h1>Flight Reservation System</h1>
-      <p class="muted">Sign in to continue</p>
+    <section class="login-hero" aria-hidden="true">
+      <div class="brand-mark">✈ <span>FRS</span></div>
+      <div class="hero-copy">
+        <h1>Flight Reservation System</h1>
+        <p>Flights, airports and reservations in one place.</p>
+      </div>
+      <svg class="hero-route" viewBox="0 0 400 160" preserveAspectRatio="none">
+        <path d="M10 140 C 120 20, 280 20, 390 120" />
+        <circle cx="10" cy="140" r="5" />
+        <circle cx="390" cy="120" r="5" />
+      </svg>
+      <div class="hero-codes"><span>ESB</span><span>IST</span><span>ADB</span></div>
+    </section>
 
-      <div id="login-alert" class="alert" role="alert" hidden></div>
+    <section class="login-panel">
+      <form id="login-form" class="login-form" novalidate>
+        <h2>Sign in</h2>
+        <p class="muted">Use your email and password.</p>
 
-      <label for="login-email">Email</label>
-      <input id="login-email" name="email" type="email" autocomplete="username" required>
+        <div id="login-alert" class="alert" role="alert" hidden></div>
 
-      <label for="login-password">Password</label>
-      <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        <label for="login-email">Email</label>
+        <input id="login-email" name="email" type="email" autocomplete="username" required>
 
-      <button id="login-submit" type="submit" class="btn btn-primary btn-block">Sign in</button>
-    </form>
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+
+        <button id="login-submit" type="submit" class="btn btn-primary btn-block">Sign in</button>
+
+        <div class="test-accounts">
+          <span class="muted">Test accounts (click to fill):</span>
+          <div class="test-buttons">
+            <button type="button" class="chip" data-email="admin@mail.com" data-password="admin123">Administrator</button>
+            <button type="button" class="chip" data-email="ali.yilmaz@mail.com" data-password="ali123">Customer</button>
+          </div>
+        </div>
+      </form>
+    </section>
   </main>
 
   <!-- ============ APP VIEW ============ -->
   <div id="app-view" hidden>
     <header class="topbar">
-      <span class="brand">✈ Flight Reservation System</span>
+      <span class="brand-mark small">✈ <span>FRS</span></span>
       <div class="user-box">
-        <span id="user-email"></span>
-        <span id="user-role" class="badge"></span>
-        <button id="logout-btn" type="button" class="btn btn-light">Log out</button>
+        <span id="user-email" class="muted"></span>
+        <span id="user-role" class="role-chip"></span>
+        <button id="logout-btn" type="button" class="btn btn-ghost">Log out</button>
       </div>
     </header>
 
     <main class="container">
       <div id="app-alert" class="alert" role="alert" hidden></div>
 
-      <section class="card">
-        <div class="section-head">
-          <h2>Flights</h2>
-          <div class="actions">
-            <button id="refresh-btn" type="button" class="btn btn-light">Refresh</button>
-            <button id="add-flight-btn" type="button" class="btn btn-primary admin-only" hidden>+ Add flight</button>
-          </div>
+      <div class="page-head">
+        <div>
+          <h1>Flights</h1>
+          <p id="flights-count" class="muted"></p>
         </div>
-        <p id="customer-note" class="muted" hidden>
-          You are signed in as a customer, so you can view flights.
-          Only administrators can add, edit or delete flights.
-        </p>
+        <div class="actions">
+          <button id="refresh-btn" type="button" class="btn btn-ghost">Refresh</button>
+          <button id="add-flight-btn" type="button" class="btn btn-primary admin-only" hidden>+ Add flight</button>
+        </div>
+      </div>
 
-        <div class="table-wrap">
-          <table id="flights-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Flight no</th>
-                <th>From</th>
-                <th>To</th>
-                <th>Departure</th>
-                <th>Arrival</th>
-                <th>Status</th>
-                <th class="admin-only" hidden>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="flights-body"></tbody>
-          </table>
-        </div>
-        <p id="flights-empty" class="muted" hidden>No flights found.</p>
-      </section>
+      <p id="customer-note" class="note" hidden>
+        You are signed in as a customer, so you can view flights.
+        Only administrators can add, edit or delete flights.
+      </p>
+
+      <div id="flights-body" class="flight-list"></div>
+      <p id="flights-empty" class="muted empty" hidden>No flights found.</p>
     </main>
   </div>
 
@@ -109,7 +119,7 @@
       <select id="f-status" name="flightstatus" required></select>
 
       <div class="dialog-actions">
-        <button id="flight-cancel" type="button" class="btn btn-light">Cancel</button>
+        <button id="flight-cancel" type="button" class="btn btn-ghost">Cancel</button>
         <button id="flight-save" type="submit" class="btn btn-primary">Save</button>
       </div>
     </form>

@@ -194,52 +194,69 @@ function formatDateTime(value) {
 
 // ---------------------------------------------------------------- render
 
-function cell(text, className) {
-  const td = document.createElement("td");
-  td.textContent = text;
-  if (className) td.className = className;
-  return td;
+// Small DOM helper: el("div", "class", "text")
+function el(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined && text !== null) node.textContent = text;
+  return node;
+}
+
+function stopElement(airportId, dateTime, extraClass) {
+  const airport = state.airports.find((a) => a.airportid === airportId);
+  const stop = el("div", extraClass ? `stop ${extraClass}` : "stop");
+  stop.append(
+    el("div", "code", airport ? airport.airportcode : `#${airportId}`),
+    el("div", "city", airport ? airport.city : "Unknown airport"),
+    el("div", "time", formatDateTime(dateTime))
+  );
+  return stop;
 }
 
 function renderFlights() {
-  const body = $("flights-body");
-  body.replaceChildren();
+  const list = $("flights-body");
+  list.replaceChildren();
 
   const flights = [...state.flights].sort((a, b) => a.flightid - b.flightid);
   $("flights-empty").hidden = flights.length > 0;
+  $("flights-count").textContent = flights.length === 1 ? "1 flight" : `${flights.length} flights`;
 
   for (const flight of flights) {
-    const tr = document.createElement("tr");
-    tr.append(
-      cell(flight.flightid),
-      cell(flight.flightnumber),
-      cell(airportLabel(flight.departureairportid)),
-      cell(airportLabel(flight.arrivalairportid)),
-      cell(formatDateTime(flight.departuredatetime)),
-      cell(formatDateTime(flight.arrivaldatetime)),
-      cell(flight.flightstatus, `status status-${String(flight.flightstatus).toLowerCase()}`)
+    const card = el("article", "flight-card");
+
+    // Left part: flight number and route
+    const main = el("div", "flight-main");
+    const top = el("div", "flight-top");
+    const title = el("div");
+    title.append(el("span", "flight-no", flight.flightnumber), el("span", "flight-id", `ID ${flight.flightid}`));
+    top.append(title);
+
+    const route = el("div", "route");
+    route.append(
+      stopElement(flight.departureairportid, flight.departuredatetime),
+      el("div", "route-line"),
+      stopElement(flight.arrivalairportid, flight.arrivaldatetime, "end")
     );
+    main.append(top, route);
+
+    // Right part (stub): status and admin actions
+    const stub = el("div", "flight-stub");
+    stub.append(el("span", `status status-${String(flight.flightstatus).toLowerCase()}`, flight.flightstatus));
 
     if (isAdmin()) {
-      const actions = document.createElement("td");
-      actions.className = "row-actions";
-
-      const edit = document.createElement("button");
+      const edit = el("button", "btn btn-ghost btn-small", "Edit");
       edit.type = "button";
-      edit.className = "btn btn-light btn-small";
-      edit.textContent = "Edit";
       edit.addEventListener("click", () => openFlightForm(flight));
 
-      const del = document.createElement("button");
+      const del = el("button", "btn btn-danger btn-small", "Delete");
       del.type = "button";
-      del.className = "btn btn-danger btn-small";
-      del.textContent = "Delete";
       del.addEventListener("click", () => deleteFlight(flight, del));
 
-      actions.append(edit, del);
-      tr.append(actions);
+      stub.append(edit, del);
     }
-    body.append(tr);
+
+    card.append(main, stub);
+    list.append(card);
   }
 }
 
@@ -376,6 +393,15 @@ async function deleteFlight(flight, button) {
 
 document.addEventListener("DOMContentLoaded", () => {
   $("login-form").addEventListener("submit", handleLogin);
+  // Test account buttons fill the form with the sample users from db/init.sql.
+  document.querySelectorAll(".test-buttons .chip").forEach((chip) => {
+    chip.addEventListener("click", () => {
+      $("login-email").value = chip.dataset.email;
+      $("login-password").value = chip.dataset.password;
+      hideAlert($("login-alert"));
+      $("login-submit").focus();
+    });
+  });
   $("logout-btn").addEventListener("click", () => logout());
   $("refresh-btn").addEventListener("click", () => {
     hideAlert($("app-alert"));
