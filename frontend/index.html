@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flight Reservation System – Group 3</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 60px auto; padding: 0 16px; }
+    code { background: #f2f2f2; padding: 2px 6px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <h1>Flight Reservation System</h1>
+  <p>Placeholder page. The frontend developer replaces this folder's contents.</p>
+  <p>API status (<code>GET /api/</code>): <strong id="status">checking...</strong></p>
+  <script>
+    // All API calls must use the /api prefix, e.g. fetch("/api/flights")
+    fetch("/api/")
+      .then(r => r.json())
+      .then(d => { document.getElementById("status").textContent = d.message; })
+      .catch(() => { document.getElementById("status").textContent = "API not reachable"; });
+  </script>
+</body>
+</html>

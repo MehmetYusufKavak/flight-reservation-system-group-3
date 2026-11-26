@@ -37,7 +37,15 @@ Requirements: Docker + Docker Compose
     cp .env.example .env
     docker compose up -d --build
 
-This single command starts PostgreSQL (with all tables and sample data) together with the web application.
+This single command starts three containers:
+
+| Service | What it does | Address |
+|---|---|---|
+| `nginx` | Serves the frontend and forwards `/api/*` to the backend (no CORS needed) | http://localhost (only public port: 80) |
+| `backend` | FastAPI app (uvicorn, port 8000) | http://localhost/api/ — Swagger: http://localhost:8000/docs |
+| `db` | PostgreSQL 16 with all tables and sample data from `db/init.sql` | localhost:5432 (local machine only) |
+
+The frontend must call the API with the `/api` prefix, e.g. `fetch("/api/flights")`.
 
 To reset the database and re-run `init.sql`:
 
@@ -51,11 +59,22 @@ To connect to the database:
 ## Project Structure
 
     .
-    ├── backend/            # API (Auth + CRUD) and Dockerfile
+    ├── backend/            # FastAPI app (Auth + CRUD) and Dockerfile
+    ├── frontend/           # Static frontend files served by nginx
+    ├── nginx/default.conf  # nginx: frontend + /api reverse proxy
     ├── db/init.sql         # CREATE TABLE + sample data (Report Chapter 5)
+    ├── requirements.txt    # Python dependencies
     ├── docker-compose.yml
     ├── .env.example
     └── README.md
+
+## Local Development (backend without Docker)
+
+    docker compose up -d db
+    pip install -r requirements.txt
+    cd backend && uvicorn main:app --reload
+
+Uses `DATABASE_URL` from `.env` (`postgresql+psycopg://...@localhost:5432/...`).
 
 ## Database
 
@@ -64,4 +83,6 @@ Roles: `Customer`, `Administrator`.
 
 ## API Endpoints
 
-_(to be added by the backend developer / Swagger link)_
+Interactive documentation (Swagger): http://localhost:8000/docs
+
+_(endpoint list to be added by the backend developer)_

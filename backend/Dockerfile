@@ -1,15 +1,17 @@
-# SABLON: Backend Node.js/Express varsayildi.
-# 1. kisi farkli bir dil kullaniyorsa (Python/Flask, Java vb.) bu dosya ona gore degisecek.
-FROM node:20-alpine
+# FastAPI backend (Python)
+# Build context: repo root (requirements.txt is in the root folder)
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN npm ci --omit=dev
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY backend/ .
 
-ENV PORT=3000
-EXPOSE 3000
+EXPOSE 8000
 
-CMD ["node", "server.js"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
