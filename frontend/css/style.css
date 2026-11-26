@@ -1,0 +1,178 @@
+:root {
+  --bg: #f3f5f9;
+  --card: #ffffff;
+  --text: #1d2433;
+  --muted: #667085;
+  --border: #dde2ea;
+  --primary: #1f5eff;
+  --primary-dark: #1848c7;
+  --danger: #d92d20;
+  --danger-bg: #fef3f2;
+  --success: #067647;
+  --success-bg: #ecfdf3;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] { display: none !important; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+}
+
+h1, h2 { margin: 0 0 8px; }
+h1 { font-size: 22px; }
+h2 { font-size: 18px; }
+
+.muted { color: var(--muted); margin: 0 0 16px; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+/* ---------- Login ---------- */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.login-card { width: 100%; max-width: 380px; }
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: 13px;
+  margin: 14px 0 6px;
+}
+
+input, select {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+}
+
+input:focus, select:focus {
+  outline: 2px solid rgba(31, 94, 255, 0.25);
+  border-color: var(--primary);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn:disabled { opacity: 0.6; cursor: default; }
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--primary-dark); }
+.btn-light { background: #fff; border-color: var(--border); color: var(--text); }
+.btn-light:hover:not(:disabled) { background: #f6f7f9; }
+.btn-danger { background: #fff; border-color: #f5c2bd; color: var(--danger); }
+.btn-danger:hover:not(:disabled) { background: var(--danger-bg); }
+.btn-small { padding: 4px 10px; font-size: 13px; }
+.btn-block { width: 100%; margin-top: 20px; }
+
+/* ---------- Alerts ---------- */
+.alert {
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  white-space: pre-line;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid #fecdca;
+}
+.alert.success {
+  background: var(--success-bg);
+  color: var(--success);
+  border-color: #abefc6;
+}
+
+/* ---------- App layout ---------- */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.brand { font-weight: 700; }
+.user-box { display: flex; align-items: center; gap: 10px; }
+
+.badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #3538cd;
+}
+.badge.admin { background: #fff4ed; color: #b93815; }
+
+.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.actions { display: flex; gap: 8px; }
+
+/* ---------- Table ---------- */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+th { font-size: 12px; text-transform: uppercase; color: var(--muted); }
+td.row-actions { display: flex; gap: 6px; }
+
+.status { font-weight: 600; }
+.status-scheduled { color: var(--success); }
+.status-delayed { color: #b54708; }
+.status-cancelled { color: var(--danger); }
+
+/* ---------- Dialog ---------- */
+dialog {
+  border: none;
+  border-radius: var(--radius);
+  padding: 24px;
+  width: min(560px, calc(100% - 32px));
+}
+dialog::backdrop { background: rgba(16, 24, 40, 0.45); }
+
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+@media (max-width: 560px) {
+  .row { grid-template-columns: 1fr; }
+  .topbar { flex-direction: column; align-items: flex-start; }
+}
